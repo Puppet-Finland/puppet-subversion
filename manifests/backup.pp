@@ -32,9 +32,9 @@
 #
 define subversion::backup
 (
+    $repodir,
     $ensure = 'present',
     $backup_name = $title,
-    $repodir,
     $output_dir = '/var/backups/local',
     $hour = '01',
     $minute = '10',
@@ -43,16 +43,16 @@ define subversion::backup
 )
 {
 
-    include subversion
+    include ::subversion
 
     cron { "subversion-backup-${repodir}-cron":
-        ensure => $ensure,
-        command => "svnadmin dump ${repodir}|gzip > ${output_dir}/subversion-${backup_name}.gz",
-        user => root,
-        hour => $hour,
-        minute => $minute,
-        weekday => $weekday,
-        require => Class['localbackups'],
+        ensure      => $ensure,
+        command     => "svnadmin dump ${repodir}|gzip > ${output_dir}/subversion-${backup_name}.gz",
+        user        => root,
+        hour        => $hour,
+        minute      => $minute,
+        weekday     => $weekday,
+        require     => Class['localbackups'],
         environment => [ 'PATH=/bin:/usr/bin:/usr/local/bin', "MAILTO=${email}" ],
     }
 }

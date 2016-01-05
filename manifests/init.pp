@@ -25,8 +25,11 @@ class subversion
 
 ) inherits subversion::params {
 
+    validate_hash($repos)
+    validate_hash($backups)
+
     create_resources('subversion::repo', $repos)
     create_resources('subversion::backup', $backups)
 
-    include subversion::install
+    include ::subversion::install
 }

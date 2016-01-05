@@ -10,8 +10,8 @@ define subversion::repo
 {
     exec { "subversion-svnadmin-create-${repodir}":
         command => "svnadmin create ${repodir}",
-        path => [ '/usr/bin', '/usr/local/bin' ],
-        creates => "${repodir}",
+        path    => [ '/usr/bin', '/usr/local/bin' ],
+        creates => $repodir,
         require => Class['subversion::install'],
     }
 }
