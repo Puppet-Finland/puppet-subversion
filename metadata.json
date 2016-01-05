@@ -1,0 +1,12 @@
+{
+  "name": "puppetfinland-subversion",
+  "version": "0.1.0",
+  "author": "Puppet-Finland team",
+  "license": "BSD license",
+  "summary": "Setup subversion",
+  "source": "https://github.com/Puppet-Finland/subversion.git",
+  "project_page": "https://github.com/Puppet-Finland/subversion",
+  "dependencies": [
+    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.0.0" }
+  ]
+}
