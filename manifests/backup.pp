@@ -16,7 +16,7 @@
 #   'present'.
 # [*backup_name*]
 #   Filename for the backup. Defaults to the name of the resource ($title).
-# [*repo_dir*]
+# [*repodir*]
 #   A path to the repository/repositories.
 # [*output_dir*]
 #   The directory where to output the files. Defaults to '/var/backups/local'.
@@ -34,7 +34,7 @@ define subversion::backup
 (
     $ensure = 'present',
     $backup_name = $title,
-    $repo_dir,
+    $repodir,
     $output_dir = '/var/backups/local',
     $hour = '01',
     $minute = '10',
@@ -45,9 +45,9 @@ define subversion::backup
 
     include subversion
 
-    cron { "subversion-backup-${repo_dir}-cron":
+    cron { "subversion-backup-${repodir}-cron":
         ensure => $ensure,
-        command => "svnadmin dump ${repo_dir}|gzip > ${output_dir}/subversion-${backup_name}.gz",
+        command => "svnadmin dump ${repodir}|gzip > ${output_dir}/subversion-${backup_name}.gz",
         user => root,
         hour => $hour,
         minute => $minute,
