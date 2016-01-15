@@ -20,6 +20,9 @@
 #   A path to the repository/repositories.
 # [*output_dir*]
 #   The directory where to output the files. Defaults to '/var/backups/local'.
+# [*quiet*]
+#   Suppress standard output. This makes sure the dump does not produce useless 
+#   "Dumping revision <n>" emails. Valid values are true (default) and false.
 # [*hour*]
 #   Hour(s) when svnadmin dump gets run. Defaults to 01.
 # [*minute*]
@@ -36,18 +39,26 @@ define subversion::backup
     $ensure = 'present',
     $backup_name = $title,
     $output_dir = '/var/backups/local',
+    $quiet = true,
     $hour = '01',
     $minute = '10',
     $weekday = '*',
     $email = $::servermonitor
 )
 {
+    validate_bool($quiet)
 
     include ::subversion
 
+    $opts = $quiet ? {
+        true    => ' -q ',
+        false   => ' ',
+        default => undef,
+    }
+
     cron { "subversion-backup-${repodir}-cron":
         ensure      => $ensure,
-        command     => "svnadmin dump ${repodir}|gzip > ${output_dir}/subversion-${backup_name}.gz",
+        command     => "svnadmin${opts}dump ${repodir}|gzip > ${output_dir}/subversion-${backup_name}.gz",
         user        => root,
         hour        => $hour,
         minute      => $minute,
